@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Management Console - Smart Hostel</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleadminhome.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div>
+                <h1>Smart Hostel</h1>
+                <p>Management View</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a class="active" href="{{ url_for('admin_issues') }}">Issues</a>
+            <a href="{{ url_for('admin_staff') }}">Staff</a>
+            <a href="{{ url_for('admin_announcements') }}">Announcements</a>
+        </nav>
+
+        <div class="settings">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <h2>Issue Management Console</h2>
+            <input type="text" placeholder="Search by Room, Reporter or Category">
+
+            <div class="profile">
+                <p class="name">Admin</p>
+                <div class="avatar"
+                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_AlTK4xY0kmCVsHrXS147JtJZem2mlC2K_cmOyO7Tb8pHpDmD1uEWETqJmY_t_8XOV0_Oh6VKtwcD0dirsms-p9MX2KxCJvnP36yfB76n8Bam_HsaNKTjIiwuYrSV2UHofq-oOqHQYBgd3toriijxRuOIYAkDZ8B7F-bBw40arP20K-dJEAgqtr4t-51_oZssGnzH-SZig4Az8-5KJvh1QrXJYFRopoyXr-5xHYUlKqddlRrNRFDTTwQ6jUFR-heJFv6VoAsw9w8');">
+                </div>
+            </div>
+        </header>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for message in messages %}
+                        <div class="flash-error">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <section class="table-wrap">
+            <h3>Active / Pending Issues</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Hostel</th>
+                        <th>Block</th>
+                        <th>Room</th>
+                        <th>Reporter</th>
+                        <th>Category</th>
+                        <th>Priority</th>
+                        <th>Elapsed</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for issue in issues %}
+                        {% if issue.status != 'Resolved' %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ issue.hostel or '—' }}</td>
+                                <td>{{ issue.block or '—' }}</td>
+                                <td>{{ issue.room or '—' }}</td>
+                                <td>{{ issue.reporter_name or '—' }}</td>
+                                <td>{{ issue.category_name or '—' }}</td>
+
+                                <td class="priority {{ issue.priority|lower }}">
+                                    {{ issue.priority }}
+                                </td>
+
+                                <td>{{ issue.created_at | elapsed_time }}</td>
+
+                                <td class="priority {{ issue.status|lower|replace(' ', '') }}">
+                                    {{ issue.status }}
+                                </td>
+
+                                <td>
+                                    {% if issue.status == 'Reported' %}
+                                        <a href="{{ url_for('assign_issue_page', issue_id=issue.id) }}">
+                                            <button class="primary">Assign</button>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% else %}
+                        <tr>
+                            <td colspan="10">No Active issues found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <br><br>
+
+        <section class="table-wrap">
+            <h3>Resolved Issues</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr.No.</th>
+                        <th>Hostel</th>
+                        <th>Block</th>
+                        <th>Room</th>
+                        <th>Reporter</th>
+                        <th>Category</th>
+                        <th>Resolved By</th>
+                        <th>Reported At</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for issue in issues | selectattr("status", "equalto", "Resolved") %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ issue.hostel or '—' }}</td>
+                            <td>{{ issue.block or '—' }}</td>
+                            <td>{{ issue.room or '—' }}</td>
+                            <td>{{ issue.reporter_name or '—' }}</td>
+                            <td>{{ issue.category_name or '—' }}</td>
+                            <td>{{ issue.assigned_to_name or '—' }}</td>
+                            <td>{{ issue.created_at | format_datetime }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8">No resolved issues yet</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

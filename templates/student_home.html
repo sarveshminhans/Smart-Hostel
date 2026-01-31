@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Smart Hostel</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleadminhome.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div>
+                <h1>Smart Hostel</h1>
+                <p>Management View</p>
+            </div>
+        </div>
+
+        <nav>
+            <a class="active" href="{{ url_for('student_home') }}">Dashboard</a>
+            <a href="{{ url_for('student_issues') }}">My Issues</a>
+            <a href="{{ url_for('student_announcement') }}">Announcements</a>
+            <a href="{{ url_for('student_lost_found') }}">Lost & Found</a>
+        </nav>
+
+        <div class="settings">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <h2>Analytics Dashboard</h2>
+
+            <input type="text" placeholder="Search issues, room numbers or staff...">
+
+            <div class="profile">
+                <div>
+                    <p class="name">{{ student_name }}</p>
+                </div>
+                <div class="avatar"
+                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBwxvnWCnS-fCHAWITPANviQxNRPT9MqtURT3u1v3CyMzvhqTVbc5eB1W4NPv4qOLSSo993p_80_9q1fzSv_xOmNt1DOCRkAOIrmSK7BeNrHAV6Mh1d5ZusgQWPbd09-KXpPhCQG7P2uO-Ib43RstWW4UHgxmLQVTQsi2zOZj7sDFk-4G0FfevXTYKf1TYXcS4JEuDY2zoXvaEOlRZlFT2gBo3uNAmYru5nWGFIDgn_SjXmqw5iDU4cTEPLCOY-Gu32q3Jz2XyrUSs_');">
+                </div>
+            </div>
+        </header>
+
+        <!-- KPI CARDS -->
+        <section class="kpis">
+            <div class="card">
+                <h4>Total Issues</h4>
+                <h2>{{ stats.total_issues }}</h2>
+                <p>Issues created by you</p>
+            </div>
+
+            <div class="card">
+                <h4>Pending Issues</h4>
+                <h2>{{ stats.pending_issues }}</h2>
+                <p>Awaiting resolution</p>
+            </div>
+
+            <div class="card">
+                <h4>Resolved Issues</h4>
+                <h2>{{ stats.resolved_issues }}</h2>
+                <p>Successfully resolved</p>
+            </div>
+        </section>
+
+        <!-- HIGHLIGHTS -->
+        <section class="charts">
+
+            <!-- ANNOUNCEMENT -->
+            <div class="chart">
+                <h3 class="section-title">Latest Announcement</h3>
+
+                {% if announcement %}
+                <div class="card announcement">
+                    <h2>{{ announcement.title }}</h2>
+                    <p>{{ announcement.content }}</p>
+
+                    <div class="meta">
+                        <span>📅 {{ announcement.created_at | format_datetime }}</span>
+                    </div>
+                </div>
+                {% else %}
+                <div class="card announcement empty">
+                    <p class="muted">No announcements at the moment</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- LOST & FOUND -->
+            <div class="chart">
+                <h3 class="section-title">Latest Lost & Found</h3>
+
+                {% if latest_item %}
+                <div class="card announcement">
+
+                    {% if latest_item.images %}
+                    <div class="image-box" style="margin-bottom: 12px;">
+                        <span class="badge {{ latest_item.status|lower }}">
+                            {{ latest_item.status }}
+                        </span>
+
+                        <img
+                            src="{{ url_for('static', filename='uploads/' ~ latest_item.images.split(',')[0]) }}"
+                            alt="Lost & Found Item"
+                            style="
+                                width: 100%;
+                                max-height: 180px;
+                                object-fit: contain;
+                                border-radius: 12px;
+                                background: #0f172a;
+                                border: 1px solid #1e293b;
+                            "
+                        >
+                    </div>
+                    {% else %}
+                    <p class="muted" style="text-align: center;">No image submitted</p>
+                    {% endif %}
+
+                    <h2>{{ latest_item.description }}</h2>
+
+                    <div class="meta">
+                        <span>
+                            📍 {{ latest_item.location }} <br>
+                            📅 {{ latest_item.date | format_datetime }}
+                        </span>
+                    </div>
+
+                    <br>
+
+                    {% if latest_item.status == 'Lost' %}
+                        <a href="{{ url_for('contact_owner', item_id=latest_item.id) }}">
+                            <button class="secondary">Contact Owner</button>
+                        </a>
+                    {% elif latest_item.status == 'Found' %}
+                        <form method="POST"
+                              action="{{ url_for('claim_item', item_id=latest_item.id) }}"
+                              onsubmit="return confirm('Are you sure you want to claim this item?');">
+                            <button class="primary">Claim Item</button>
+                        </form>
+                    {% else %}
+                        <button disabled>Returned</button>
+                    {% endif %}
+
+                </div>
+                {% else %}
+                <div class="card announcement empty">
+                    <p class="muted">No Lost & Found at the moment</p>
+                </div>
+                {% endif %}
+            </div>
+
+        </section>
+
+        <!-- RECENT ISSUES -->
+        <section class="table-section">
+            <h3>Recent Pending Issues</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr.No.</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Assigned To</th>
+                        <th>Elapsed</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for issue in unresolved_issues %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ issue.title }}</td>
+                        <td>{{ issue.category_name }}</td>
+                        <td>
+                            {% if issue.assigned_to_name %}
+                                {{ issue.assigned_to_name }}
+                            {% else %}
+                                Unassigned
+                            {% endif %}
+                        </td>
+                        <td>{{ issue.created_at | elapsed_time }}</td>
+                        <td>{{ issue.status }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6">No pending issues found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

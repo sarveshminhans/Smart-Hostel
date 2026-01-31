@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Issue Details – Smart Hostel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleadminhome.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div>
+                <h1>Smart Hostel</h1>
+                <p>Student View</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('student_home') }}">Dashboard</a>
+            <a class="active" href="{{ url_for('student_issues') }}">My Issues</a>
+            <a href="{{ url_for('student_announcement') }}">Announcements</a>
+            <a href="{{ url_for('student_lost_found') }}">Lost & Found</a>
+        </nav>
+
+        <div class="settings">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <h2>Issue Details</h2>
+
+            <input type="text" placeholder="Search issues...">
+
+            <div class="profile">
+                <div>
+                    <p class="role">Student</p>
+                </div>
+                <div class="avatar"
+                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBwxvnWCnS-fCHAWITPANviQxNRPT9MqtURT3u1v3CyMzvhqTVbc5eB1W4NPv4qOLSSo993p_80_9q1fzSv_xOmNt1DOCRkAOIrmSK7BeNrHAV6Mh1d5ZusgQWPbd09-KXpPhCQG7P2uO-Ib43RstWW4UHgxmLQVTQsi2zOZj7sDFk-4G0FfevXTYKf1TYXcS4JEuDY2zoXvaEOlRZlFT2gBo3uNAmYru5nWGFIDgn_SjXmqw5iDU4cTEPLCOY-Gu32q3Jz2XyrUSs_');">
+                </div>
+            </div>
+        </header>
+
+        <!-- BACK -->
+        <a href="{{ url_for('student_issues') }}" class="back-btn">
+            ← Back to all issues
+        </a>
+
+        <!-- CONTENT -->
+        <main class="container">
+
+            <!-- ISSUE HEADER -->
+            <section class="issue-header">
+                <div>
+                    <h2>{{ issue.title }}</h2>
+                    <div class="badges">
+                        <span class="meta">
+                            Reported on {{ issue.created_at | format_datetime }}
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LAYOUT -->
+            <div class="layout">
+
+                <!-- LEFT COLUMN -->
+                <section class="left">
+                    <div class="card">
+                        <p>{{ issue.description }}</p>
+
+                        <div class="info-grid">
+                            <div>
+                                <small>Category</small>
+                                <strong>{{ issue.category_name }}</strong>
+                                <br>
+
+                                <small>Location</small>
+                                <strong>{{ issue.block }} – Room {{ issue.room }}</strong>
+                                <br>
+
+                                <small>Reported By</small>
+                                <strong>{{ student_name }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- RIGHT COLUMN -->
+                <aside class="right">
+                    <div class="card">
+                        <h3>Status Timeline</h3>
+
+                        {% set workflow = ['Reported', 'Assigned', 'In Progress', 'Resolved', 'Closed'] %}
+                        {% set history_map = {} %}
+
+                        {% set _ = history_map.update({'Reported': issue.created_at}) %}
+
+                        {% for h in history %}
+                            {% set _ = history_map.update({h.status: h.timestamp}) %}
+                        {% endfor %}
+
+                        <ul class="timeline">
+                            {% for step in workflow %}
+                                {% if step in history_map %}
+                                    {% if loop.last or workflow[loop.index0 + 1] not in history_map %}
+                                        <li class="active">
+                                            <span class="dot"></span>
+                                            <div class="content">
+                                                <strong>{{ step }}</strong>
+                                                <small>{{ history_map[step] | format_datetime }}</small>
+                                            </div>
+                                        </li>
+                                    {% else %}
+                                        <li class="done">
+                                            <span class="dot"></span>
+                                            <div class="content">
+                                                <strong>{{ step }}</strong>
+                                                <small>{{ history_map[step] | format_datetime }}</small>
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                {% else %}
+                                    <li class="pending">
+                                        <span class="dot"></span>
+                                        <div class="content">
+                                            <strong>{{ step }}</strong>
+                                            <small>Pending</small>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+                </aside>
+
+            </div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>© 2023 Smart Hostel Systems</p>
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

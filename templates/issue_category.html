@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Issue - Select Category</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "surface-light": "#ffffff",
+                        "border-light": "#e2e8f0"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style type="text/tailwindcss">
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .category-card {
+            @apply border border-border-light rounded-2xl p-6 flex flex-col items-center justify-center gap-4 transition-all duration-200 cursor-pointer hover:border-primary/50 hover:bg-primary/5;
+        }
+        .category-card-active {
+            @apply border-2 border-primary bg-primary/5 ring-4 ring-primary/10;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light text-slate-900 antialiased min-h-screen flex items-center justify-center p-4 overflow-hidden">
+
+<div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-border-light">
+
+    <div class="p-8 pb-0">
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800">Report New Issue</h1>
+                <p class="text-slate-500 text-sm">
+                    Step 1: Select a category for your issue.
+                </p>
+            </div>
+
+            <button class="p-2 hover:bg-slate-100 rounded-full text-slate-400"
+                    onclick="window.location.href='{{ url_for('student_issues') }}'">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div class="relative mb-12">
+            <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-100 -translate-y-1/2 rounded-full"></div>
+            <div class="absolute top-1/2 left-0 w-1/6 h-1 bg-primary -translate-y-1/2 rounded-full transition-all duration-500"></div>
+
+            <div class="relative flex justify-between px-2">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="size-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold z-10 shadow-lg shadow-primary/30">
+                        1
+                    </div>
+                    <span class="text-xs font-bold text-primary">Category</span>
+                </div>
+
+                <div class="flex flex-col items-center gap-2">
+                    <div class="size-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-sm font-bold z-10">
+                        2
+                    </div>
+                    <span class="text-xs font-medium text-slate-400">Details</span>
+                </div>
+
+                <div class="flex flex-col items-center gap-2">
+                    <div class="size-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-sm font-bold z-10">
+                        3
+                    </div>
+                    <span class="text-xs font-medium text-slate-400">Location</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST" action="{{ url_for('report_issue_category') }}">
+
+        <div class="p-8 grid grid-cols-2 sm:grid-cols-3 gap-4">
+
+            {% for cat in categories %}
+            <label class="cursor-pointer">
+
+                <input
+                    type="radio"
+                    name="category"
+                    value="{{ cat.name }}"
+                    class="peer hidden"
+                    required
+                >
+
+                <div class="
+                    border border-border-light rounded-2xl p-6
+                    flex flex-col items-center justify-center gap-4
+                    transition-all duration-200 cursor-pointer
+                    hover:border-primary/50 hover:bg-primary/5
+                    peer-checked:border-2
+                    peer-checked:border-primary
+                    peer-checked:bg-primary/5
+                    peer-checked:ring-4
+                    peer-checked:ring-primary/10
+                    peer-checked:scale-[1.02]
+                ">
+                    <div class="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-3xl text-slate-600">
+                            {{
+                                'plumbing' if cat.name == 'Plumbing' else
+                                'electrical_services' if cat.name == 'Electrical' else
+                                'wifi' if cat.name == 'Internet' else
+                                'chair' if cat.name == 'Furniture' else
+                                'cleaning_services' if cat.name == 'Cleanliness' else
+                                'more_horiz'
+                            }}
+                        </span>
+                    </div>
+
+                    <span class="text-sm font-semibold text-slate-700">
+                        {{ cat.name }}
+                    </span>
+                </div>
+
+            </label>
+            {% endfor %}
+
+        </div>
+
+        <div class="p-6 bg-slate-50 border-t flex justify-between items-center">
+
+            <a href="{{ url_for('student_issues') }}"
+               class="text-sm font-medium text-slate-500 hover:text-slate-700">
+                Cancel
+            </a>
+
+            <button type="submit"
+                    class="px-8 py-2.5 bg-primary text-white font-bold text-sm rounded-lg flex items-center gap-2 hover:brightness-110">
+                Next Step
+                <span class="material-symbols-outlined text-lg">arrow_forward</span>
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

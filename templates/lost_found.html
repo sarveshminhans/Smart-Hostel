@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found | Smart Hostel</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="left-panel">
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <rect x="2" y="2" width="10" height="10" fill="#F5A623"></rect>
+                <rect x="12" y="12" width="10" height="10" fill="#F5A623"></rect>
+            </svg>
+            <span>Smart Hostel</span>
+        </div>
+
+        <div class="content">
+            <h1>Lost & Found</h1>
+            <p>Report lost or found items within the hostel community.</p>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="form-container">
+
+            <p class="footer-link">
+                <a href="{{ url_for('student_lost_found') }}">← Back</a>
+            </p>
+
+            <h2>Report an Item</h2>
+            <p>Fill in the details below carefully.</p>
+
+            <form method="POST" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description"
+                              placeholder="Describe the item clearly..."
+                              rows="2"
+                              required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text"
+                           name="location"
+                           placeholder="e.g. Block A, Laundry Area"
+                           required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" required>
+                            <option value="Lost">Lost</option>
+                            <option value="Found">Found</option>
+                            <option value="Claimed">Claimed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Images (optional)</label>
+                    <input type="file" name="images" multiple>
+                </div>
+
+                <button type="submit">
+                    Submit Report
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

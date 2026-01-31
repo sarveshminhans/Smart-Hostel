@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcement Management Center - Smart Hostel</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleadminhome.css') }}">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div>
+                <h1>Smart Hostel</h1>
+                <p>Management View</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('admin_issues') }}">Issues</a>
+            <a href="{{ url_for('admin_staff') }}">Staff</a>
+            <a class="active" href="{{ url_for('admin_announcements') }}">Announcements</a>
+        </nav>
+
+        <div class="settings">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <h2>Announcements</h2>
+            <input type="text" placeholder="Search announcements...">
+
+            <div class="profile">
+                <p class="name">Admin</p>
+                <div class="avatar"
+                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_AlTK4xY0kmCVsHrXS147JtJZem2mlC2K_cmOyO7Tb8pHpDmD1uEWETqJmY_t_8XOV0_Oh6VKtwcD0dirsms-p9MX2KxCJvnP36yfB76n8Bam_HsaNKTjIiwuYrSV2UHofq-oOqHQYBgd3toriijxRuOIYAkDZ8B7F-bBw40arP20K-dJEAgqtr4t-51_oZssGnzH-SZig4Az8-5KJvh1QrXJYFRopoyXr-5xHYUlKqddlRrNRFDTTwQ6jUFR-heJFv6VoAsw9w8');">
+                </div>
+            </div>
+        </header>
+
+        <div class="content">
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-container">
+                        {% for message in messages %}
+                            <div class="flash-error">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <section class="card">
+                <h3>
+                    <span class="material-symbols-outlined">edit_note</span>
+                    Publish Announcement
+                </h3>
+
+                <form class="form" method="POST" action="{{ url_for('admin_announcements') }}">
+                    <label>Title</label>
+                    <input type="text" name="title" placeholder="Maintenance Notice" required>
+
+                    <label>Description</label>
+                    <textarea name="content" rows="4" placeholder="Announcement details..." required></textarea>
+
+                    <label>Target</label>
+                    <select name="target_hostel">
+                        <option value="All Hostel">All Hostel</option>
+                        {% for h in hostels %}
+                            <option value="{{ h.hostel }}">Hostel {{ h.hostel }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <br><br>
+
+                    <button type="submit" class="primary-btn full">Publish Now</button>
+                </form>
+            </section>
+
+            <section class="card">
+                <h3>Active Announcements</h3>
+
+                {% for ann in announcements %}
+                    <div class="announcement">
+
+                        <div class="announcement-header">
+                            <span class="tag primary">
+                                {% if ann.hostel == "All Hostel" %}
+                                    All Hostel
+                                {% else %}
+                                    Hostel {{ ann.hostel }}
+                                {% endif %}
+                            </span>
+
+                            <div class="actions"></div>
+                        </div>
+
+                        <h2>{{ loop.index }}. {{ ann.title }}</h2>
+                        <h3>{{ ann.content }}</h3>
+
+                        <div class="meta">
+                            <span></span>
+                            <span>
+                                {{ ann.created_at | format_datetime }}
+                                <a href="/admin/announcements/delete/{{ ann.id }}"
+                                   onclick="return confirm('Delete this announcement?')">
+                                    <button type="submit" class="icon">🗑</button>
+                                </a>
+                            </span>
+                        </div>
+
+                    </div>
+                {% else %}
+                    <p>No active announcements</p>
+                {% endfor %}
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

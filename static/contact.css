@@ -1,0 +1,345 @@
+/* Basic Reset to remove default browser spacing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff; /* Solid white background as requested */
+    color: #333;
+    overflow-x: hidden; /* Prevent horizontal scroll due to angled background */
+}
+
+.main-container {
+    display: flex;
+    min-height: 95vh; /* Occupy most of the screen height */
+    width: 100%;
+    position: relative;
+   
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuD6-uAqBi4PHJeBFy7ouQczsPUSt-IjQLDmssU4F1WD1Tp90kI_G0EJ7VW0EgEvReNLUoLNYBA-oi3KNFsRRpfYJmxQwPa81ktmPY25ShKMcISgEibQCX_BEBEM8A2q4oyta2mgZfXhzy7rVer4VjwCuIRaAPk75pONpTB-ad5S_nJYTGFb0mNQ2FRLdVbaB_LryIGOHuxtNXYamYWoefne_B0dc8izU4ds49PSLg79RftdMQOszI40edPpaAsCasAWDZsj6JjdZrac);
+    background-size: cover;
+}   
+
+.orange-text {
+    color: #ff9933;
+}
+
+/* === Left Contact Panel (Dark Side) === */
+.contact-panel {
+    /* Use a very dark gray/black to match image */
+    background-color: #1a1a1a; 
+    color: #fff;
+    width: 45%; /* Takes up slightly less than half */
+    position: relative;
+    display: flex;
+    align-items: center; /* Vertically center content */
+    padding-left: 8%; /* Spacing from left edge */
+    z-index: 1; /* Ensure it stays below the form card */
+}
+
+/* The angled shape technique */
+.contact-panel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -120px; /* Push it out to the right */
+    width: 250px; /* Wide enough to cover the gap */
+    height: 100%;
+    background-color: #1a1a1a;
+    transform: skewX(-10deg); /* Creates the angled edge */
+    z-index: -1; /* Sits behind the text content */
+}
+
+.contact-content {
+    position: relative;
+    z-index: 2;
+    max-width: 400px;
+}
+
+.header-small {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.dash {
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background-color: #666;
+    margin: 0 10px;
+}
+
+.contact-content h1 {
+    font-size: 48px;
+    line-height: 1.1;
+    font-weight: 800;
+    margin-bottom: 50px;
+}
+
+/* Contact Info Items */
+.info-list {
+    margin-bottom: 60px;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.icon-orange {
+    color: #ff9933;
+    font-size: 20px;
+    margin-right: 20px;
+    margin-top: 5px; /* Align with the first line of text */
+}
+
+.info-item h4 {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    color: #ccc;
+}
+
+.info-item p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #eee;
+}
+
+/* Social Media Icons at bottom left */
+.social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #333;
+    color: #fff;
+    margin-right: 15px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.social-icons a:hover {
+    background-color: #ff9933;
+}
+
+/* === Right Form Panel (White Side) === */
+.form-panel {
+    width: 45%;
+    display: flex;
+    justify-content: center; /* Horizontally center card */
+    align-items: center;    /* Vertically center card */
+    background-color: transparent; /* Transparent to let white body show */
+    padding: 40px;
+    margin-left: 90px;
+    z-index: 10; /* Ensure it sits on top of the dark angled background */
+}
+
+.form-card {
+    background-color: #ffffff;
+    padding: 50px;
+    border-radius: 25px;
+    /* Soft shadow to lift the card */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 550px; /* Ensures it doesn't get too wide */
+}
+
+.form-card h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.form-subtitle {
+    font-size: 15px;
+    color: #777;
+    margin-bottom: 35px;
+    line-height: 1.4;
+}
+
+/* Form Styles */
+.form-row {
+    display: flex;
+    gap: 20px; /* Space between side-by-side inputs */
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1; /* Makes items in row take equal width */
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #888;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* Input field styling */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    /* Light gray background from image */
+    background-color: #f2f2f2; 
+    border: none;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #555;
+    outline: none; /* Remove default browser outline on focus */
+}
+
+/* Placeholder text color */
+::placeholder {
+    color: #aaa;
+}
+
+.form-group textarea {
+    resize: none; /* Disable manual resize */
+    margin-bottom: 30px;
+}
+
+/* Custom dropdown arrow */
+.select-wrapper {
+    position: relative;
+}
+/* Hiding default select arrow and adding custom one */
+.select-wrapper::after {
+    content: '\f078'; /* Font Awesome chevron-down */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    pointer-events: none;
+    font-size: 12px;
+}
+.form-group select {
+    appearance: none; /* Hides default system arrow */
+    -webkit-appearance: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #ff9933;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-bottom: 20px;
+}
+
+.submit-btn:hover {
+    background-color: #e68a2e; /* Slightly darker orange on hover */
+}
+
+.disclaimer {
+    font-size: 11px;
+    color: #999;
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #999;
+    background-color: #fff;
+    /* Ensure footer stays below everything */
+    position: relative; 
+    z-index: 20;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 900px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .contact-panel {
+        width: 100%;
+        padding: 40px 20px;
+        /* Remove the angled effect on mobile for cleaner look */
+        background-color: #1a1a1a;
+    }
+    .contact-panel::after {
+        display: none;
+    }
+
+    .contact-content {
+        max-width: 100%;
+        padding: 0 20px;
+    }
+
+    .form-panel {
+        width: 100%;
+        padding: 20px;
+    }
+    
+    .form-card {
+        padding: 30px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+}
+#home{
+  width: 50px;
+  height: 50px;
+  
+  position: absolute;
+  top: 0%;
+  right: 3%;
+  padding: 40px;
+  z-index: 999;
+}
+#home i{
+    font-size: 25px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.582);
+}
+#home i:hover{
+transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(255, 159, 47, 0.6);
+}
+.orange-link {
+    color: #F5A623;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}

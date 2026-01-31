@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Analytics Dashboard - Smart Hostel</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleadminhome.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div>
+                <h1>Smart Hostel</h1>
+                <p>Management View</p>
+            </div>
+        </div>
+
+        <nav>
+            <a class="active" href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('admin_issues') }}">Issues</a>
+            <a href="{{ url_for('admin_staff') }}">Staff</a>
+            <a href="{{ url_for('admin_announcements') }}">Announcements</a>
+        </nav>
+
+        <div class="settings">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <h2>Analytics Dashboard</h2>
+
+            <input type="text" placeholder="Search issues, room numbers or staff...">
+
+            <div class="profile">
+                <div>
+                    <p class="name">Admin</p>
+                </div>
+                <div class="avatar"
+                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_AlTK4xY0kmCVsHrXS147JtJZem2mlC2K_cmOyO7Tb8pHpDmD1uEWETqJmY_t_8XOV0_Oh6VKtwcD0dirsms-p9MX2KxCJvnP36yfB76n8Bam_HsaNKTjIiwuYrSV2UHofq-oOqHQYBgd3toriijxRuOIYAkDZ8B7F-bBw40arP20K-dJEAgqtr4t-51_oZssGnzH-SZig4Az8-5KJvh1QrXJYFRopoyXr-5xHYUlKqddlRrNRFDTTwQ6jUFR-heJFv6VoAsw9w8');">
+                </div>
+            </div>
+        </header>
+
+        <section class="kpis">
+            <div class="card">
+                <h4>Total Pending</h4>
+                <h2>{{ stats.pending }}</h2>
+                <p>Issues awaiting resolution</p>
+            </div>
+
+            <div class="card">
+                <h4>Avg. Resolution Time</h4>
+                <h2>{{ stats.avg_resolution }} hrs</h2>
+                <p>Mean time to fix</p>
+            </div>
+
+            <div class="card">
+                <h4>Active Announcements</h4>
+                <h2>{{ stats.announcements }}</h2>
+                <p>Live broadcasts</p>
+            </div>
+        </section>
+
+        <section class="charts">
+            <div class="chart">
+                <h3>Issue Volume by Category</h3>
+
+                <div class="bars">
+                    {% for category in issue_categories %}
+                        <div style="height: {{ category.percent | default(0) }}%">
+                            {{ category.name }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="chart">
+                <div class="resolution-card">
+                    <h3>Resolution Status</h3>
+                    <p class="subtitle">Overall efficiency tracking</p>
+
+                    <div class="donut"
+                         style="
+                            --resolved: {{ stats.resolved_percent }};
+                            --pending: {{ 100 - stats.resolved_percent }};
+                         ">
+                        <div class="donut-center">
+                            <span class="percent">{{ stats.resolved_percent }}%</span>
+                            <small>RESOLVED</small>
+                        </div>
+                    </div>
+
+                    <div class="legend">
+                        <div class="item">
+                            <span class="dot resolved"></span>
+                            <span>Resolved</span>
+                            <strong>{{ stats.resolved }}</strong>
+                        </div>
+
+                        <div class="item">
+                            <span class="dot pending"></span>
+                            <span>Pending</span>
+                            <strong>{{ stats.pending }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="table-section">
+            <h3>Recent Unassigned issues</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr.No.</th>
+                        <th>Hostel</th>
+                        <th>Block</th>
+                        <th>Room</th>
+                        <th>Category</th>
+                        <th>Elapsed</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for issue in critical_issues %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ issue.hostel }}</td>
+                            <td>{{ issue.block }}</td>
+                            <td>{{ issue.room }}</td>
+                            <td>{{ issue.category }}</td>
+                            <td>{{ issue.elapsed | elapsed_time }}</td>
+                            <td>
+                                {% if issue.status != 'Resolved' %}
+                                    <a href="{{ url_for('assign_issue_page', issue_id=issue.id) }}">
+                                        <button class="primary">Assign</button>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7">No Unassigned issues found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

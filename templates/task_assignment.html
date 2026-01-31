@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Tasks - Smart Hostel</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleadminhome.css') }}">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div>
+                <h1>Smart Hostel</h1>
+                <p>Management View</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('admin_issues') }}">Issues</a>
+            <a href="{{ url_for('admin_staff') }}" class="active">Staff</a>
+            <a href="{{ url_for('admin_announcements') }}">Announcements</a>
+        </nav>
+
+        <div class="settings">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <h2>Assign Tasks</h2>
+
+            <input type="text" placeholder="Search staff by name or role...">
+
+            <div class="profile">
+                <p class="name">Admin</p>
+                <div class="avatar"
+                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_AlTK4xY0kmCVsHrXS147JtJZem2mlC2K_cmOyO7Tb8pHpDmD1uEWETqJmY_t_8XOV0_Oh6VKtwcD0dirsms-p9MX2KxCJvnP36yfB76n8Bam_HsaNKTjIiwuYrSV2UHofq-oOqHQYBgd3toriijxRuOIYAkDZ8B7F-bBw40arP20K-dJEAgqtr4t-51_oZssGnzH-SZig4Az8-5KJvh1QrXJYFRopoyXr-5xHYUlKqddlRrNRFDTTwQ6jUFR-heJFv6VoAsw9w8');">
+                </div>
+            </div>
+        </header>
+
+        <!-- FLASH MESSAGES -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash-container">
+            {% for message in messages %}
+            <div class="flash-error">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <!-- FORM -->
+        <form method="POST">
+
+            <main class="content">
+
+                <!-- STAFF CARD -->
+                <section class="cards">
+                    <input type="hidden" name="staff_id" value="{{ staff.id }}">
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="card-header">
+                                <div class="profile">
+                                    <div class="avatar"
+                                         style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQslz0ZEvWlNIRilUgYpBr1ilGd1LdkXvHOceyzgACN6lhQSV5S4jmTeNTt06eBL_ou_aiMr2_oQx_KDAP_33CvtJyo1GWk-SIx32wpZtrb9S1nA_MPtlG3She23lbW7h_-U8m0hMEgvbw70FVn8BtnuxtXIZ8_Rs-v1UTH2oVHpp7k47Sod0IauKRCljIC_tJn16ziNq2P0A6JROfYHmJ8Huaji8Db1jVQARB8yz-EK-AXZLwoCsCHkl4dLAMAmt1N3ofjW6pJl2j');">
+                                    </div>
+                                    <div>
+                                        <h4>{{ staff.name }}</h4>
+                                        <p>{{ staff.designation }}</p>
+                                    </div>
+                                </div>
+
+                                {% if active_tasks == 0 %}
+                                    <span class="status available">Available</span>
+                                {% else %}
+                                    <span class="status busy">Busy</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="metrics">
+                                <div>
+                                    <small>Active Tasks:</small>
+                                    <strong>{{ active_tasks }}</strong>
+                                </div>
+                                <div>
+                                    <small>Phone:</small>
+                                    <strong>{{ staff.phone }}</strong>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer">
+                            <a href="tel:{{ staff.phone }}">
+                                <button type="button" class="icon">📞</button>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ISSUES TABLE -->
+                <section class="table-wrap">
+                    <h3>Pending Issues</h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sr.No.</th>
+                                <th>Assign</th>
+                                <th>Category</th>
+                                <th>Hostel</th>
+                                <th>Block</th>
+                                <th>Room</th>
+                                <th>Priority</th>
+                                <th>Elapsed Time</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for issue in issues %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+
+                                <td class="checkbox-cell">
+                                    <label class="custom-checkbox">
+                                        <input type="checkbox"
+                                               name="issue_ids"
+                                               value="{{ issue.id }}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+
+                                <td>{{ issue.category_name or '—' }}</td>
+                                <td>{{ issue.hostel }}</td>
+                                <td>{{ issue.block or '—' }}</td>
+                                <td>{{ issue.room or '—' }}</td>
+
+                                <td class="priority {{ issue.priority|lower }}">
+                                    {{ issue.priority }}
+                                </td>
+
+                                <td>{{ issue.created_at | elapsed_time }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="8" class="empty">
+                                    No pending issues 🎉
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+
+            </main>
+
+            <!-- FOOTER -->
+            <footer class="footer">
+
+                <input type="datetime-local"
+                       name="expected_completion"
+                       class="datetime-input"
+                       required>
+
+                <textarea name="instructions"
+                          placeholder="Specific instructions for staff..."></textarea>
+
+                <button type="submit" class="primary">
+                    <span class="material-symbols-outlined">
+                        assignment_turned_in
+                    </span>
+                    Confirm Assignment
+                </button>
+
+            </footer>
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

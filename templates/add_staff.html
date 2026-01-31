@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Staff - Smart Hostel</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+
+    <style>
+        .error {
+            color: #d32f2f;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+        .error-border {
+            border: 1px solid #d32f2f !important;
+        }
+        .error-message {
+            background-color: #ffebee;
+            color: #d32f2f;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #d32f2f;
+            text-align: center;
+        }
+        .password-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #togglePassword {
+            cursor: pointer;
+            font-size: 18px;
+            color: #6e6b66;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="left-panel">
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <rect x="2" y="2" width="10" height="10" fill="#F5A623"/>
+                <rect x="12" y="12" width="10" height="10" fill="#F5A623"/>
+            </svg>
+            <span>Smart Hostel</span>
+        </div>
+
+        <div class="content">
+            <h1>Add Staff</h1>
+            <p>Create a staff account for hostel operations.</p>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="form-container">
+
+            <h2>Staff Registration</h2>
+            <p>Only administrators can add staff.</p>
+
+            {% if error %}
+                <div class="error-message">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('add_staff') }}" id="staffForm">
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" id="name" placeholder="e.g. Alex Johnson" required>
+                    <div class="error" id="nameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" id="username" placeholder="Choose a username" required>
+                    <div class="error" id="usernameError"></div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Designation</label>
+                        <input type="text" name="designation" id="designation" placeholder="Enter staff designation" required>
+                        <div class="error" id="designationError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" name="phone" id="phone" maxlength="10" placeholder="10-digit number" required>
+                        <div class="error" id="phoneError"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-input">
+                        <input type="password" name="password" id="password" placeholder="Create a secure password" required>
+                        <span id="togglePassword">
+                            <i class="ri-eye-off-line"></i>
+                        </span>
+                    </div>
+                    <div class="error" id="passwordError"></div>
+                </div>
+
+                <button type="submit">Add Staff</button>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div id="home">
+    <a href="{{ url_for('admin_staff') }}" class="orange-link">
+        <i class="ri-arrow-left-line"></i>Back
+    </a>
+</div>
+
+<script>
+    const form = document.getElementById("staffForm");
+
+    const name = document.getElementById("name");
+    const username = document.getElementById("username");
+    const designation = document.getElementById("designation");
+    const phone = document.getElementById("phone");
+    const password = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+
+    function setError(input, message) {
+        document.getElementById(input.id + "Error").textContent = message;
+        input.classList.add("error-border");
+    }
+
+    function clearErrors() {
+        document.querySelectorAll(".error").forEach(e => e.textContent = "");
+        document.querySelectorAll("input").forEach(i => i.classList.remove("error-border"));
+    }
+
+    phone.addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "").slice(0, 10);
+    });
+
+    form.addEventListener("submit", function (e) {
+        clearErrors();
+        let valid = true;
+
+        if (!/^[A-Za-z\s]+$/.test(name.value)) {
+            setError(name, "Only letters and spaces allowed");
+            valid = false;
+        }
+
+        if (username.value.length < 4 || username.value.includes(" ")) {
+            setError(username, "Min 4 characters, no spaces");
+            valid = false;
+        }
+
+        if (designation.value.length < 3) {
+            setError(designation, "Enter valid designation");
+            valid = false;
+        }
+
+        if (!/^[6-9]\d{9}$/.test(phone.value)) {
+            setError(phone, "Enter valid 10-digit phone number");
+            valid = false;
+        }
+
+        if (!/^(?=.*[A-Za-z])(?=.*\d).{6,}$/.test(password.value)) {
+            setError(password, "Min 6 chars with letters & numbers");
+            valid = false;
+        }
+
+        if (!valid) e.preventDefault();
+    });
+
+    togglePassword.addEventListener("click", () => {
+        password.type = password.type === "password" ? "text" : "password";
+        togglePassword.innerHTML =
+            password.type === "password"
+                ? '<i class="ri-eye-off-line"></i>'
+                : '<i class="ri-eye-line"></i>';
+    });
+</script>
+
+</body>
+</html>

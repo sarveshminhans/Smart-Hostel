@@ -1,0 +1,332 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    /* background-color: #111111; */
+    color: #ffffff;
+    overflow: hidden; /* Prevent horizontal scroll due to slanted elements */
+}
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-size: cover;
+}   
+
+.split-container {
+    display: flex;
+    flex-grow: 1; /* Takes up remaining height above footer */
+    position: relative;
+    /* Ensure the split section doesn't overlap the footer area incorrectly */
+    min-height: 90vh; 
+}
+
+/* Typography & Colors */
+.text-orange {
+    color: #ff9933;
+}
+
+/* ====== Left Dark Section ====== */
+.left-content {
+    background-color: #111111;
+    width: 40%; /* Approx width based on image */
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2; /* Ensure text is above the slanted background */
+}
+
+/* The Angled Edge Effect */
+.left-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -150px; /* Push it out to the right to overlap the image */
+    width: 300px; /* Wide enough to cover the gap */
+    height: 100%;
+    background-color: #111111;
+    /* Skew negative X to get the bottom-left to top-right slant */
+    transform: skewX(-12deg); 
+    z-index: -1; /* Place behind the text content */
+}
+
+.content-box {
+    max-width: 450px;
+}
+
+.logo-header {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    color: #aaaaaa;
+}
+
+.dash {
+    display: inline-block;
+    width: 25px;
+    height: 1px;
+    background-color: #555;
+    margin: 0 15px;
+}
+
+h1 {
+    font-size: 64px;
+    line-height: 1.1;
+    font-weight: 800;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+}
+
+/* Feature List */
+.feature-list {
+    list-style: none;
+    margin-bottom: 50px;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.icon-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: #ff9933;
+    border-radius: 50%;
+    margin-right: 20px;
+    color: #111; /* Dark icon inside orange circle */
+    font-size: 14px;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 50px;
+    max-width: 200px;
+}
+
+.btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px; /* Rounded pill shape */
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    text-transform: uppercase;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn-orange {
+    background-color: #ff9933;
+    color: #111;
+}
+
+.btn-dark {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+/* Disclaimer Text */
+.disclaimer-text {
+    font-size: 12px;
+    color: #777777;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    font-style: italic;
+}
+
+/* Social Icons */
+.social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #222222;
+    color: #aaaaaa;
+    margin-right: 15px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.social-icons a:hover {
+    background-color: #ff9933;
+    color: #111;
+}
+
+/* ====== Right Image Section ====== */
+.right-image {
+    width: 60%;
+    position: relative;
+    /* REPLACE WITH YOUR ACTUAL IMAGE URL */
+    background-image: url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=2070&auto=format&fit=crop'); 
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+    overflow: hidden; /* Keeps the slanted pseudo-element from spilling out */
+}
+
+/* Navigation Bar */
+.navbar {
+    position: absolute;
+    top: 40px;
+    right: 60px;
+    background-color: #ffffff;
+    padding: 15px 30px;
+    border-radius: 50px;
+    display: flex;
+    gap: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #333333;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    position: relative;
+}
+
+/* The active orange underline style */
+.navbar a.active {
+    color: #ff9933;
+}
+
+.navbar a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #ff9933;
+}
+
+/* ====== Footer ====== */
+.footer-bar {
+    background-color: #ffffff;
+    color: #aaaaaa;
+    padding: 25px 60px;
+    display: flex;
+    justify-content: center; /* Centers the main text */
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.footer-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.dark-mode-toggle {
+    position: absolute;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background-color: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Responsive Adjustments (Basic) */
+@media (max-width: 1024px) {
+    .left-content {
+        padding: 40px;
+    }
+    h1 { font-size: 48px; }
+    .navbar { right: 20px; top: 20px; padding: 10px 20px; gap: 15px;}
+}
+
+@media (max-width: 768px) {
+    .split-container {
+        flex-direction: column;
+    }
+    .left-content {
+        width: 100%;
+        padding: 60px 30px;
+    }
+    .left-content::after {
+        display: none; /* Remove slant on mobile */
+    }
+    .right-image {
+        width: 100%;
+        height: 300px; /* Give image fixed height on mobile */
+    }
+    .navbar {
+        width: 90%;
+        top: 20px;
+        right: 5%;
+        justify-content: space-between;
+    }
+    .footer-bar {
+        padding: 20px 30px;
+    }
+    .dark-mode-toggle {
+        position: relative;
+        margin-left: 20px;
+    }
+}
+#home{
+  width: 50px;
+  height: 50px;
+  
+  position: absolute;
+  z-index: 9999;
+  top: 0%;
+  right: 3%;
+  padding: 40px;
+}
+#home i{
+    font-size: 25px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+#home i:hover{
+transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(255, 159, 47, 0.6);
+}
+.orange-link {
+    color: #F5A623;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Analytics Dashboard - Smart Hostel</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleadminhome.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div>
+                <h1>Smart Hostel</h1>
+                <p>Management View</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('staff_home') }}">Dashboard</a>
+            <a href="{{ url_for('pending_issues') }}">Issues Not Started</a>
+            <a href="{{ url_for('staff_in_progress') }}">Issues In Progress</a>
+            <a class="active" href="{{ url_for('resolved_issues') }}">Issues Resolved</a>
+        </nav>
+
+        <div class="settings">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <h2>Analytics Dashboard</h2>
+
+            <input type="text" placeholder="Search issues, room numbers or staff...">
+
+            <div class="profile">
+                <div>
+                    <p class="name">Staff</p>
+                </div>
+                <div class="avatar"
+                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQslz0ZEvWlNIRilUgYpBr1ilGd1LdkXvHOceyzgACN6lhQSV5S4jmTeNTt06eBL_ou_aiMr2_oQx_KDAP_33CvtJyo1GWk-SIx32wpZtrb9S1nA_MPtlG3She23lbW7h_-U8m0hMEgvbw70FVn8BtnuxtXIZ8_Rs-v1UTH2oVHpp7k47Sod0IauKRCljIC_tJn16ziNq2P0A6JROfYHmJ8Huaji8Db1jVQARB8yz-EK-AXZLwoCsCHkl4dLAMAmt1N3ofjW6pJl2j');">
+                </div>
+            </div>
+        </header>
+
+        <section class="table-section">
+            <h3>Resolved Issues</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr.No.</th>
+                        <th>Hostel</th>
+                        <th>Block</th>
+                        <th>Room</th>
+                        <th>Category</th>
+                        <th>Completion Time</th>
+                        <th>View</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for issue in issues %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ issue.hostel or '—' }}</td>
+                            <td>{{ issue.block or '—' }}</td>
+                            <td>{{ issue.room or '—' }}</td>
+                            <td>{{ issue.category_name }}</td>
+                            <td>
+                                {{ issue.created_at | completion_time(issue.resolved_at) }}
+                            </td>
+
+                            <td>
+                                <a href="{{ url_for('staff_view_issue', issue_id=issue.id) }}">
+                                    <button>View</button>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="{{ url_for('issue_comments', issue_id=issue.id) }}">
+                                    <button>Remark</button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8">No resolved issues.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

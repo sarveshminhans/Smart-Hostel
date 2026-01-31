@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Issues – Smart Hostel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleadminhome.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div>
+                <h1>Smart Hostel</h1>
+                <p>Student View</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('student_home') }}">Dashboard</a>
+            <a class="active" href="{{ url_for('student_issues') }}">My Issues</a>
+            <a href="{{ url_for('student_announcement') }}">Announcements</a>
+            <a href="{{ url_for('student_lost_found') }}">Lost & Found</a>
+        </nav>
+
+        <div class="settings">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <h2>My Reported Issues</h2>
+
+            <input type="text" placeholder="Search issues...">
+
+            <button type="button"
+                    class="primary-btn"
+                    onclick="window.location.href='{{ url_for('report_issue_category') }}'">
+                <span class="material-symbols-outlined">add</span>
+                Create New Issue
+            </button>
+
+            <div class="profile">
+                <div>
+                    <p class="role">Student</p>
+                </div>
+                <div class="avatar"
+                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBwxvnWCnS-fCHAWITPANviQxNRPT9MqtURT3u1v3CyMzvhqTVbc5eB1W4NPv4qOLSSo993p_80_9q1fzSv_xOmNt1DOCRkAOIrmSK7BeNrHAV6Mh1d5ZusgQWPbd09-KXpPhCQG7P2uO-Ib43RstWW4UHgxmLQVTQsi2zOZj7sDFk-4G0FfevXTYKf1TYXcS4JEuDY2zoXvaEOlRZlFT2gBo3uNAmYru5nWGFIDgn_SjXmqw5iDU4cTEPLCOY-Gu32q3Jz2XyrUSs_');">
+                </div>
+            </div>
+        </header>
+
+        <!-- TABLE -->
+        <section class="table-section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr.No.</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Priority</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Reported</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for issue in issue %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ issue.title }}</td>
+                        <td>{{ issue.category_name }}</td>
+
+                        <td class="priority {{ issue.priority|lower }}">
+                            {{ issue.priority }}
+                        </td>
+
+                        <td>
+                            {{ issue.block }} {{ issue.room or '' }}
+                        </td>
+
+                        <td>{{ issue.status }}</td>
+
+                        <td>
+                            {{ issue.created_at | format_datetime }}
+                        </td>
+
+                        <td>
+                            <a href="{{ url_for('student_issue_detail', issue_id=issue.id) }}">
+                                <button class="secondary">View</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="8">No issues reported yet</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

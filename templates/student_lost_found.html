@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found | Smart Hostel</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleadminhome.css') }}">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div>
+                <h1>Smart Hostel</h1>
+                <p>Student View</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('student_home') }}">Dashboard</a>
+            <a href="{{ url_for('student_issues') }}">My Issues</a>
+            <a href="{{ url_for('student_announcement') }}">Announcements</a>
+            <a class="active" href="{{ url_for('student_lost_found') }}">Lost & Found</a>
+        </nav>
+
+        <div class="settings">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <h2>Lost & Found</h2>
+
+            <input type="text" placeholder="Search items...">
+
+            <div class="profile">
+                <p class="name">Student</p>
+                <div class="avatar"
+                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBwxvnWCnS-fCHAWITPANviQxNRPT9MqtURT3u1v3CyMzvhqTVbc5eB1W4NPv4qOLSSo993p_80_9q1fzSv_xOmNt1DOCRkAOIrmSK7BeNrHAV6Mh1d5ZusgQWPbd09-KXpPhCQG7P2uO-Ib43RstWW4UHgxmLQVTQsi2zOZj7sDFk-4G0FfevXTYKf1TYXcS4JEuDY2zoXvaEOlRZlFT2gBo3uNAmYru5nWGFIDgn_SjXmqw5iDU4cTEPLCOY-Gu32q3Jz2XyrUSs_');">
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <section class="content">
+
+            <!-- PAGE HEADER -->
+            <div class="page-header">
+                <div>
+                    <h1>Lost & Found Portal</h1>
+                    <p>Community board to recover missing belongings</p>
+                </div>
+
+                <br>
+            </div>
+
+            <br>
+
+            <!-- ITEMS GRID -->
+            <div class="cards">
+                <div class="card add-card">
+                <a href="{{ url_for('lost_found') }}">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    <p>Report a new Item</p>
+                </a>
+                </div>
+                {% for item in items %}
+                <div class="card {{ item.status|lower }}">
+                    
+                    <!-- IMAGE -->
+                    {% if item.images %}
+                    <div class="image"
+                         style="background-image: url('{{ url_for('static', filename='uploads/' ~ item.images.split(',')[0]) }}');">
+                    {% else %}
+                    <div class="image no-image">
+                        <br><br><br>
+                        <h2 class="muted" style="text-align: center;">
+                            No image submitted
+                        </h2>
+                    {% endif %}
+
+                        <span class="badge {{ item.status|lower }}">
+                            {{ item.status }}
+                        </span>
+                    </div>
+
+                    <!-- CARD BODY -->
+                    <div class="card-body">
+                        <h3>{{ item.description }}</h3>
+                        <p>📍 {{ item.location }}</p>
+                        <p>📅 {{ item.date }}</p>
+
+                        <br>
+
+                        {% if item.status == 'Lost' %}
+                            <a href="{{ url_for('contact_owner', item_id=item.id) }}">
+                                <button class="secondary">Contact Owner</button>
+                            </a>
+
+                        {% elif item.status == 'Found' %}
+                            <form method="POST"
+                                  action="{{ url_for('claim_item', item_id=item.id) }}"
+                                  onsubmit="return confirm('Are you sure you want to claim this item?');">
+                                <button class="primary">Claim Item</button>
+                            </form>
+
+                        {% else %}
+                            <button disabled>Returned</button>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                {% else %}
+                <div class="empty">
+                    <p>No lost or found items yet.</p>
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Announcements - Smart Hostel</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleadminhome.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div>
+                <h1>Smart Hostel</h1>
+                <p>Management View</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('student_home') }}">Dashboard</a>
+            <a href="{{ url_for('student_issues') }}">My Issues</a>
+            <a class="active" href="{{ url_for('student_announcement') }}">Announcements</a>
+            <a href="{{ url_for('student_lost_found') }}">Lost & Found</a>
+        </nav>
+
+        <div class="settings">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <h2>Announcements</h2>
+
+            <input type="text" placeholder="Search announcements...">
+
+            <div class="profile">
+                <div>
+                    <p class="name">Student</p>
+                </div>
+                <div class="avatar"
+                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBwxvnWCnS-fCHAWITPANviQxNRPT9MqtURT3u1v3CyMzvhqTVbc5eB1W4NPv4qOLSSo993p_80_9q1fzSv_xOmNt1DOCRkAOIrmSK7BeNrHAV6Mh1d5ZusgQWPbd09-KXpPhCQG7P2uO-Ib43RstWW4UHgxmLQVTQsi2zOZj7sDFk-4G0FfevXTYKf1TYXcS4JEuDY2zoXvaEOlRZlFT2gBo3uNAmYru5nWGFIDgn_SjXmqw5iDU4cTEPLCOY-Gu32q3Jz2XyrUSs_');">
+                </div>
+            </div>
+        </header>
+
+        <!-- ANNOUNCEMENTS -->
+        <section class="cards">
+
+            {% for ann in announcements %}
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="card-header">
+                        <div class="profile">
+                            <p>{{ loop.index }}. {{ ann.title }}</p>
+                        </div>
+
+                        <span class="status available">
+                            {{ ann.created_at | format_datetime }}
+                        </span>
+                    </div>
+
+                    <p style="margin-top: 10px;">
+                        {{ ann.content }}
+                    </p>
+
+                    <br>
+
+                    <h4>
+                        {% if ann.hostel == "All Hostel" %}
+                            {{ ann.hostel }}
+                        {% else %}
+                            Hostel {{ ann.hostel }}
+                        {% endif %}
+                    </h4>
+
+                </div>
+            </div>
+            {% endfor %}
+
+            {% if announcements|length == 0 %}
+                <p>No announcements available.</p>
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

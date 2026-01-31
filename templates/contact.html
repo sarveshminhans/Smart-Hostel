@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Hostel - Contact Us</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="main-container">
+
+    <div class="contact-panel">
+        <div class="contact-content">
+
+            <div class="header-small">
+                <span class="orange-text">Smart</span>
+                <span class="dash"></span>
+                HOSTEL
+            </div>
+
+            <h1>
+                CONTACT <br>
+                <span class="orange-text">US</span>
+            </h1>
+
+            <div class="info-list">
+
+                <div class="info-item">
+                    <i class="fas fa-phone-alt icon-orange"></i>
+                    <div>
+                        <h4>CAMPUS SECURITY</h4>
+                        <p>+1 (555) 123-4567 (Emergency)</p>
+                        <p>+1 (555) 123-4568 (General)</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-envelope icon-orange"></i>
+                    <div>
+                        <h4>HOSTEL WARDEN</h4>
+                        <p>warden.north@smarthostel.edu</p>
+                        <p>warden.south@smarthostel.edu</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt icon-orange"></i>
+                    <div>
+                        <h4>PHYSICAL OFFICE</h4>
+                        <p>Admin Block, Room 104-B</p>
+                        <p>University Campus, Sector 12</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="form-panel">
+        <div class="form-card">
+
+            <h2>Send Inquiry</h2>
+            <p class="form-subtitle">Management typically responds within 24 hours.</p>
+
+            <form action="#" method="POST">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullName">FULL NAME</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="John Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="studentId">STUDENT ID</label>
+                        <input type="text" id="studentId" name="studentId" placeholder="SH-2024-001">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inquiryType">INQUIRY TYPE</label>
+                    <div class="select-wrapper">
+                        <select id="inquiryType" name="inquiryType">
+                            <option value="general">General Inquiry</option>
+                            <option value="maintenance">Maintenance Request</option>
+                            <option value="complaint">Complaint</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">YOUR MESSAGE</label>
+                    <textarea id="message" name="message" rows="5" placeholder="How can we help you today?"></textarea>
+                </div>
+
+                <button type="reset" class="submit-btn">SEND MESSAGE</button>
+
+                <p class="disclaimer">
+                    *By submitting, you agree to the Smart Hostel Data Privacy Guidelines.
+                </p>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<div id="home">
+    <a href="{{ url_for('home') }}" class="orange-link">
+        <i class="ri-home-4-fill"></i>
+    </a>
+</div>
+
+</body>
+</html>

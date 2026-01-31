@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Issue - Smart Hostel</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleadminhome.css') }}">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div>
+                <h1>Smart Hostel</h1>
+                <p>Management View</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('staff_home') }}">Dashboard</a>
+            <a href="{{ url_for('pending_issues') }}">Issues Not Started</a>
+            <a href="{{ url_for('staff_in_progress') }}">Issues In Progress</a>
+            <a href="{{ url_for('resolved_issues') }}">Issues Resolved</a>
+        </nav>
+
+        <div class="settings">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <h2>Assign Issue</h2>
+
+            <input type="text" placeholder="Search issues, room numbers or staff...">
+
+            <div class="profile">
+                <div>
+                    <p class="name">Staff</p>
+                </div>
+                <div class="avatar"
+                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQslz0ZEvWlNIRilUgYpBr1ilGd1LdkXvHOceyzgACN6lhQSV5S4jmTeNTt06eBL_ou_aiMr2_oQx_KDAP_33CvtJyo1GWk-SIx32wpZtrb9S1nA_MPtlG3She23lbW7h_-U8m0hMEgvbw70FVn8BtnuxtXIZ8_Rs-v1UTH2oVHpp7k47Sod0IauKRCljIC_tJn16ziNq2P0A6JROfYHmJ8Huaji8Db1jVQARB8yz-EK-AXZLwoCsCHkl4dLAMAmt1N3ofjW6pJl2j');">
+                </div>
+            </div>
+        </header>
+
+        <div>
+            <a href="#"
+               class="back-btn"
+               onclick="event.preventDefault(); window.history.back();">
+                ← Back
+            </a>
+        </div>
+
+        <section class="issue-detail">
+
+            <h3 class="section-title">Issue Details</h3>
+
+            <div class="issue-card">
+
+                <div class="issue-info">
+
+                    <div class="info-row">
+                        <span class="label">Issue ID</span>
+                        <span class="value">#{{ issue.id }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Category</span>
+                        <span class="value">{{ issue.category_name }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Hostel</span>
+                        <span class="value">{{ issue.hostel or '—' }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Block</span>
+                        <span class="value">{{ issue.block or '—' }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Room</span>
+                        <span class="value">{{ issue.room or '—' }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Priority</span>
+                        <span class="value">{{ issue.priority or '-' }}</span>
+                    </div>
+
+                    <div class="info-row column">
+                        <span class="label">Description</span>
+                        <p class="description">
+                            {{ issue.description or 'No description provided.' }}
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="issue-media">
+                    <h4>Submitted Image</h4>
+
+                    <div class="image-box">
+                        {% if issue.media %}
+                            <div class="image-grid">
+                                {% for img in issue.media.split(',') %}
+                                    <img src="{{ url_for('static', filename='uploads/' ~ img) }}"
+                                         alt="Issue Image">
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="muted">No images submitted</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Item Owner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f6f7fb;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", system-ui, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            color: var(--text);
+        }
+
+        .card {
+            width: 100%;
+            max-width: 520px;
+            background: var(--card);
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .section {
+            padding: 20px 24px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border);
+            font-size: 15px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .value {
+            font-weight: 600;
+        }
+
+        .footer {
+            padding: 16px 24px;
+            background: #f9fafb;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            font-weight: 600;
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="card-header">
+        <h2>Contact Item Owner</h2>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Item Details</div>
+
+        <div class="info-row">
+            <span class="label">Item</span>
+            <span class="value">{{ item.description }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Location</span>
+            <span class="value">{{ item.location }}</span>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Item Reported By</div>
+
+        <div class="info-row">
+            <span class="label">Name</span>
+            <span class="value">{{ item.name }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Hostel</span>
+            <span class="value">{{ item.hostel }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Block</span>
+            <span class="value">{{ item.block }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Room</span>
+            <span class="value">{{ item.room }}</span>
+        </div>
+    </div>
+
+    <div class="footer">
+        <a href="#"
+           class="back-btn"
+           onclick="event.preventDefault(); window.history.back();">
+            ← Back
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

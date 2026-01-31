@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comments for Issue {{ issue_id }}</title>
+</head>
+<body>
+    <h2>Comments for Issue {{ issue_id }}</h2>
+    <a href="{{ url_for('admin_issues') }}">Back to Issues</a>
+    <form method="post">
+        <textarea name="comment" rows="4" cols="50" required></textarea><br>
+        <button type="submit">Add Comment</button>
+    </form>
+    <h3>Comments:</h3>
+    <ul>
+        {% for c in comments %}
+        <li><b>{{ c['username'] }}</b> ({{ c['timestamp'] }}): {{ c['comment'] }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

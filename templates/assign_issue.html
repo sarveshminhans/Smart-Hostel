@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Issue - Smart Hostel</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleadminhome.css') }}">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div>
+                <h1>Smart Hostel</h1>
+                <p>Management View</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('admin_issues') }}">Issues</a>
+            <a href="{{ url_for('admin_staff') }}">Staff</a>
+            <a href="{{ url_for('admin_announcements') }}">Announcements</a>
+        </nav>
+
+        <div class="settings">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <h2>Assign Issue</h2>
+            <input type="text" placeholder="Search issues, room numbers or staff...">
+
+            <div class="profile">
+                <div>
+                    <p class="name">Admin</p>
+                </div>
+                <div class="avatar"
+                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_AlTK4xY0kmCVsHrXS147JtJZem2mlC2K_cmOyO7Tb8pHpDmD1uEWETqJmY_t_8XOV0_Oh6VKtwcD0dirsms-p9MX2KxCJvnP36yfB76n8Bam_HsaNKTjIiwuYrSV2UHofq-oOqHQYBgd3toriijxRuOIYAkDZ8B7F-bBw40arP20K-dJEAgqtr4t-51_oZssGnzH-SZig4Az8-5KJvh1QrXJYFRopoyXr-5xHYUlKqddlRrNRFDTTwQ6jUFR-heJFv6VoAsw9w8');">
+                </div>
+            </div>
+        </header>
+
+        <div>
+            <a href="#"
+               class="back-btn"
+               onclick="event.preventDefault(); window.history.back();">
+                ← Back
+            </a>
+        </div>
+
+        <section class="issue-detail">
+
+            <h3 class="section-title">Issue Details</h3>
+
+            <div class="issue-card">
+
+                <div class="issue-info">
+
+                    <div class="info-row">
+                        <span class="label">Issue ID</span>
+                        <span class="value">#{{ issue.id }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Category</span>
+                        <span class="value">{{ issue.category_name }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Hostel</span>
+                        <span class="value">{{ issue.hostel or '—' }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Block</span>
+                        <span class="value">{{ issue.block or '—' }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Room</span>
+                        <span class="value">{{ issue.room or '—' }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Priority</span>
+                        <span class="value">{{ issue.priority or '-' }}</span>
+                    </div>
+
+                    <div class="info-row column">
+                        <span class="label">Description</span>
+                        <p class="description">
+                            {{ issue.description or 'No description provided.' }}
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="issue-media">
+                    <h4>Submitted Image</h4>
+
+                    <div class="image-box">
+                        {% if issue.media %}
+                            <div class="image-grid">
+                                {% for img in issue.media.split(',') %}
+                                    <img src="{{ url_for('static', filename='uploads/' ~ img) }}"
+                                         alt="Issue Image">
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="muted">No images submitted</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="cards">
+            {% for member in staff %}
+                <div class="card">
+
+                    <div class="card-body">
+
+                        <div class="card-header">
+                            <div class="profile">
+                                <div class="avatar"
+                                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQslz0ZEvWlNIRilUgYpBr1ilGd1LdkXvHOceyzgACN6lhQSV5S4jmTeNTt06eBL_ou_aiMr2_oQx_KDAP_33CvtJyo1GWk-SIx32wpZtrb9S1nA_MPtlG3She23lbW7h_-U8m0hMEgvbw70FVn8BtnuxtXIZ8_Rs-v1UTH2oVHpp7k47Sod0IauKRCljIC_tJn16ziNq2P0A6JROfYHmJ8Huaji8Db1jVQARB8yz-EK-AXZLwoCsCHkl4dLAMAmt1N3ofjW6pJl2j');">
+                                </div>
+                                <div>
+                                    <h4>{{ member.name }}</h4>
+                                    <p>{{ member.designation }}</p>
+                                </div>
+                            </div>
+
+                            {% if member.active_tasks == 0 %}
+                                <span class="status available">Available</span>
+                            {% else %}
+                                <span class="status busy">Busy</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="metrics">
+                            <div>
+                                <small>Active Tasks</small>
+                                <strong>{{ member.active_tasks }}</strong>
+                            </div>
+                            <div>
+                                <small>Phone</small>
+                                <strong>{{ member.phone }}</strong>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer">
+
+                        <form method="POST"
+                              action="{{ url_for('assign_issue', issue_id=issue.id, staff_id=member.id) }}"
+                              onsubmit="return confirm('Assign this issue to {{ member.name }}?');">
+                            <button class="assign" type="submit">
+                                Assign Issue
+                            </button>
+                        </form>
+
+                        <a href="tel:{{ member.phone }}">
+                            <button class="icon">📞</button>
+                        </a>
+
+                    </div>
+
+                </div>
+            {% else %}
+                <p>No staff available, Please add staff.</p>
+            {% endfor %}
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

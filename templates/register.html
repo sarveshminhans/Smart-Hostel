@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Hostel Landing Page</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+
+    <style>
+        .error {
+            color: #d32f2f;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+        .error-border {
+            border: 1px solid #d32f2f !important;
+        }
+        .error-message {
+            background-color: #ffebee;
+            color: #d32f2f;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #d32f2f;
+            text-align: center;
+        }
+        .password-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #togglePassword {
+            cursor: pointer;
+            font-size: 18px;
+            color: #6e6b66;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="left-panel">
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24">
+                <rect x="2" y="2" width="10" height="10" fill="#F5A623"></rect>
+                <rect x="12" y="12" width="10" height="10" fill="#F5A623"></rect>
+            </svg>
+            <span>Smart Hostel</span>
+        </div>
+
+        <div class="content">
+            <h1>Join Us</h1>
+            <p>Experience the future of hostel living.</p>
+        </div>
+
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="form-container">
+            <h2>Create your student account</h2>
+            <p>Please fill in your details to get started.</p>
+
+            {% if error %}
+                <div class="error-message">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('register') }}" id="registerForm">
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text"
+                           name="name"
+                           id="name"
+                           placeholder="e.g. Alex Johnson"
+                           required>
+                    <div class="error" id="nameError"></div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text"
+                               name="username"
+                               id="username"
+                               placeholder="Choose a username"
+                               required>
+                        <div class="error" id="usernameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hostel</label>
+                        <input type="text"
+                               name="hostel"
+                               placeholder="Enter your hostel name"
+                               required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Block</label>
+                        <input type="text"
+                               name="block"
+                               placeholder="Enter your Block"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Room Number</label>
+                        <input type="text"
+                               name="room"
+                               placeholder="Enter your Room Number"
+                               required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-input">
+                        <input type="password"
+                               name="password"
+                               id="password"
+                               placeholder="Create a secure password"
+                               required>
+                        <span id="togglePassword">
+                            <i class="ri-eye-off-line"></i>
+                        </span>
+                    </div>
+                    <div class="error" id="passwordError"></div>
+                </div>
+
+                <button type="submit">Create Account</button>
+            </form>
+
+            <p class="footer-link">
+                Already have an account?
+                <a href="{{ url_for('login') }}">Log in</a>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<div id="home">
+    <a href="{{ url_for('home') }}" class="orange-link">
+        <i class="ri-home-4-fill"></i>
+    </a>
+</div>
+
+<script>
+    const form = document.getElementById("registerForm");
+    const nameInput = document.getElementById("name");
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+
+    const nameError = document.getElementById("nameError");
+    const usernameError = document.getElementById("usernameError");
+    const passwordError = document.getElementById("passwordError");
+
+    const togglePassword = document.getElementById("togglePassword");
+
+    function clearErrors() {
+        nameError.textContent = "";
+        usernameError.textContent = "";
+        passwordError.textContent = "";
+
+        nameInput.classList.remove("error-border");
+        usernameInput.classList.remove("error-border");
+        passwordInput.classList.remove("error-border");
+    }
+
+    form.addEventListener("submit", (e) => {
+        clearErrors();
+        let valid = true;
+
+        if (!/^[A-Za-z\s]+$/.test(nameInput.value.trim())) {
+            nameError.textContent = "Only letters and spaces allowed.";
+            nameInput.classList.add("error-border");
+            valid = false;
+        }
+
+        if (usernameInput.value.length < 4 || usernameInput.value.includes(" ")) {
+            usernameError.textContent = "Min 4 chars, no spaces.";
+            usernameInput.classList.add("error-border");
+            valid = false;
+        }
+
+        if (!/^(?=.*[A-Za-z])(?=.*\d).{6,}$/.test(passwordInput.value)) {
+            passwordError.textContent = "At least 6 characters with letters & numbers.";
+            passwordInput.classList.add("error-border");
+            valid = false;
+        }
+
+        if (!valid) e.preventDefault();
+    });
+
+    togglePassword.addEventListener("click", () => {
+        const type = passwordInput.type === "password" ? "text" : "password";
+        passwordInput.type = type;
+
+        togglePassword.innerHTML =
+            type === "password"
+                ? '<i class="ri-eye-off-line"></i>'
+                : '<i class="ri-eye-line"></i>';
+    });
+</script>
+
+</body>
+</html>

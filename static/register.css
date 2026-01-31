@@ -1,0 +1,284 @@
+/* ================= RESET & BASE ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #1a1814;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ================= CONTAINER ================= */
+.container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(
+        105deg,
+        #1a1814 0%,
+        #1a1814 40%,
+        #25221d 40%,
+        #25221d 100%
+    );
+}
+
+/* ================= LEFT PANEL ================= */
+.left-panel {
+    flex: 0 0 40%;
+    padding: 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.logo svg {
+    margin-right: 12px;
+}
+
+.content h1 {
+    font-size: 56px;
+    font-weight: 800;
+    margin-bottom: 14px;
+}
+
+.content p {
+    color: #b0b0b0;
+    line-height: 1.6;
+    max-width: 420px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #333;
+    color: #fff;
+    margin-right: 15px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.social-icons a:hover {
+    background-color: #ff9933;
+}
+/* ================= RIGHT PANEL ================= */
+.right-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 80px 100px;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 520px;
+}
+
+.form-container h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.form-container > p {
+    color: #b0b0b0;
+    margin-bottom: 36px;
+    font-size: 14px;
+}
+
+/* ================= FORM ================= */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-row {
+    display: flex;
+    gap: 24px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* ================= INPUTS ================= */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 16px;
+    background-color: #2a2722;
+    border: 1px solid #3a3732;
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #6e6b66;
+    font-weight: 500;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #F5A623;
+    box-shadow: 0 0 0 2px rgba(245, 166, 35, 0.15);
+}
+
+/* ================= TEXTAREA ================= */
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* ================= DATE PICKER ================= */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+/* ================= SELECT ================= */
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236e6b66'%3E%3Cpath d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    cursor: pointer;
+}
+
+/* ================= FILE UPLOAD ================= */
+input[type="file"] {
+    width: 100%;
+    padding: 14px;
+    background-color: #2a2722;
+    border: 1px dashed #3a3732;
+    border-radius: 8px;
+    color: #b0b0b0;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+    padding: 10px 16px;
+    margin-right: 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #F5A623;
+    color: #1a1814;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #e0961f;
+}
+
+/* ================= PASSWORD ================= */
+.password-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#togglePassword {
+    cursor: pointer;
+    font-size: 18px;
+    color: #6e6b66;
+}
+
+/* ================= BUTTON ================= */
+button {
+    width: 100%;
+    padding: 18px;
+    background-color: #F5A623;
+    border: none;
+    border-radius: 8px;
+    color: #1a1814;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 20px rgba(245, 166, 35, 0.5);
+}
+
+button:hover {
+    background-color: #e0961f;
+}
+
+/* ================= FOOTER ================= */
+.footer-link {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: #b0b0b0;
+}
+
+.footer-link a {
+    color: #F5A623;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* ================= HOME ICON ================= */
+#home{
+  width: 50px;
+  height: 50px;
+  
+  position: absolute;
+  top: 0%;
+  right: 3%;
+  padding: 40px;
+}
+#home i{
+    font-size: 25px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+#home i:hover{
+transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(255, 159, 47, 0.6);
+}
+#togglePassword i{
+    color: #F5A623;
+}
+.orange-link {
+    color: #F5A623;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}
