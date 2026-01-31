@@ -7,8 +7,9 @@ from functools import wraps
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-app.secret_key = "smart_hostel_secret_key"
-DB = "hostel.db"
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB = os.path.join(BASE_DIR, "hostel.db")
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -1563,6 +1564,7 @@ def analytics():
     return render_template("analytics.html", cat_counts=cat_counts, status_counts=status_counts)
 
 # -------------------- MAIN --------------------
+init_db()
 if __name__ == "__main__":
-    init_db()
+    
     app.run()    
